@@ -1,21 +1,11 @@
 # PostfinanceScraper
 
-**TODO: Add description**
+Scrapes Postfinance.ch to log in and download transaction export. Cleans up exported csv, then imports to firefly_iii.
 
-## Installation
+## Setup
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `postfinance_scraper` to your list of dependencies in `mix.exs`:
+Set copy .env.template to .env and set variables
 
-```elixir
-def deps do
-  [
-    {:postfinance_scraper, "~> 0.1.0"}
-  ]
-end
-```
+## Debugging
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/postfinance_scraper>.
-
+remove `--headless` args in `postfinance_scarper.ex` to watch scraping in a chrome window.
