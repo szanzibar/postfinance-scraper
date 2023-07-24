@@ -69,7 +69,12 @@ defmodule PostfinanceScraper.ExportCleaner do
   defp strip_kauf_vom(contents) do
     contents
     |> Enum.map(fn line ->
-      String.replace(line, ~r/Kauf\/Dienstleistung vom [\d\.]+, /, "")
+      # Some transactions have a prefix that is later removed, possibly when it clears?
+      # Clearing the prefix in advance prevents duplicates
+      # Two examples I've seen:
+      # "Kauf/Onlineshopping vom 21.07.2023, SBB Ticket Shop" shortened to "SBB Ticket Shop"
+      # "Kauf/Dienstleistung vom 07.07.2023, Coop-1340 Seuzach" shortened to "Coop-1340 Seuzach"
+      String.replace(line, ~r/Kauf\/\w+ vom [\d\.]+, /, "")
     end)
   end
 
