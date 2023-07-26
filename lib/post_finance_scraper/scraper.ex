@@ -12,7 +12,7 @@ defmodule PostFinanceScraper.Scraper do
             prefs: %{
               "download.default_directory" => "/home/steven/postfinance_scraper/downloads/"
             },
-            args: ["--headless"]
+            args: ["--headless", "--no-sandbox", "--disable-dev-shm-usage"]
           }
         }
       )

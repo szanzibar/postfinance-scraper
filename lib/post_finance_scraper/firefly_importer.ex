@@ -26,4 +26,8 @@ defmodule PostFinanceScraper.FireflyImporter do
     |> Enum.join("\n")
     |> tap(&Logger.info(&1))
   end
+
+  defp parse_response({:error, error}) do
+    inspect(error)
+  end
 end
