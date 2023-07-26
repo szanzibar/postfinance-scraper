@@ -7,6 +7,7 @@ FROM elixir:latest
 RUN mkdir /app
 COPY . /app
 WORKDIR /app
+RUN mkdir -p downloads
 
 # Install Hex package manager.
 # By using `--force`, we don’t need to type “Y” to confirm the installation.

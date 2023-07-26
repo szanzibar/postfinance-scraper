@@ -4,13 +4,15 @@ defmodule PostFinanceScraper.Scraper do
   @url "https://www.postfinance.ch/ap/ba/ob/html/finance/home?login"
 
   def scrape() do
+    root_dir = File.cwd!()
+
     {:ok, session} =
       Wallaby.start_session(
         capabilities: %{
           javascriptEnabled: true,
           chromeOptions: %{
             prefs: %{
-              "download.default_directory" => "/home/steven/postfinance_scraper/downloads/"
+              "download.default_directory" => "#{root_dir}/downloads/"
             },
             args: ["--headless", "--no-sandbox", "--disable-dev-shm-usage"]
           }
@@ -28,7 +30,7 @@ defmodule PostFinanceScraper.Scraper do
     |> assert_has(css("oklr-fido-login"))
     |> Kernel.tap(fn session ->
       File.write(
-        "/home/steven/postfinance_scraper/tmp/before_logged_in.html",
+        "#{root_dir}/tmp/before_logged_in.html",
         page_source(session)
       )
     end)
@@ -40,14 +42,14 @@ defmodule PostFinanceScraper.Scraper do
     |> visit(transaction_url)
     |> Kernel.tap(fn session ->
       File.write(
-        "/home/steven/postfinance_scraper/tmp/transactions.html",
+        "#{root_dir}/tmp/transactions.html",
         page_source(session)
       )
     end)
     |> assert_has(css("fpuc-movements-overview-export > button"))
     |> Kernel.tap(fn session ->
       File.write(
-        "/home/steven/postfinance_scraper/tmp/transactions.html",
+        "#{root_dir}/tmp/transactions.html",
         page_source(session)
       )
     end)
