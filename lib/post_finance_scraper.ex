@@ -8,9 +8,9 @@ defmodule PostFinanceScraper do
   """
 
   def run() do
-    PostfinanceScraper.Scraper.scrape()
+    PostFinanceScraper.Scraper.scrape()
 
-    PostfinanceScraper.ExportCleaner.clean()
-    |> PostfinanceScraper.FireflyImporter.import()
+    PostFinanceScraper.ExportCleaner.clean()
+    |> PostFinanceScraper.FireflyImporter.import()
   end
 end

@@ -17,7 +17,7 @@ defmodule PostFinanceScraper.Scraper do
         }
       )
 
-    post_finance = Application.get_env(:post_finance_scraper, :postfinance) |> Map.new()
+    post_finance = Application.get_env(:post_finance_scraper, :post_finance) |> Map.new()
 
     # Visit the requested URL and fetch the page body
     visit(session, @url)
