@@ -1,4 +1,4 @@
-defmodule PostfinanceScraper.ExportCleaner do
+defmodule PostFinanceScraper.ExportCleaner do
   require Logger
 
   def clean do

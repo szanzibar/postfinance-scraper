@@ -1,4 +1,4 @@
-defmodule PostfinanceScraper.Scraper do
+defmodule PostFinanceScraper.Scraper do
   import Wallaby.Browser
   import Wallaby.Query
   @url "https://www.postfinance.ch/ap/ba/ob/html/finance/home?login"
@@ -17,13 +17,13 @@ defmodule PostfinanceScraper.Scraper do
         }
       )
 
-    postfinance = Application.get_env(:postfinance_scraper, :postfinance) |> Map.new()
+    post_finance = Application.get_env(:post_finance_scraper, :postfinance) |> Map.new()
 
     # Visit the requested URL and fetch the page body
     visit(session, @url)
-    |> fill_in(text_field("p_username"), with: postfinance.username)
-    |> fill_in(text_field("p_passw"), with: postfinance.password)
-    |> fill_in(text_field("p_userid"), with: postfinance.user_id)
+    |> fill_in(text_field("p_username"), with: post_finance.username)
+    |> fill_in(text_field("p_passw"), with: post_finance.password)
+    |> fill_in(text_field("p_userid"), with: post_finance.user_id)
     |> click(button("submitLogin"))
     |> assert_has(css("oklr-fido-login"))
     |> Kernel.tap(fn session ->

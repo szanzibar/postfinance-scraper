@@ -1,8 +1,8 @@
-defmodule PostfinanceScraperTest do
+defmodule PostFinanceScraperTest do
   use ExUnit.Case
-  doctest PostfinanceScraper
+  doctest PostFinanceScraperTest
 
   test "greets the world" do
-    assert PostfinanceScraper.hello() == :world
+    assert PostFinanceScraperTest.hello() == :world
   end
 end

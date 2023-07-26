@@ -1,8 +1,8 @@
-defmodule PostfinanceScraper.FireflyImporter do
+defmodule PostFinanceScraper.FireflyImporter do
   require Logger
 
   def import(csv_path) do
-    firefly = Application.get_env(:postfinance_scraper, :firefly_iii) |> Map.new()
+    firefly = Application.get_env(:post_finance_scraper, :firefly_iii) |> Map.new()
 
     headers = [Authorization: "Bearer #{firefly.token}", Accept: "application/json"]
 
