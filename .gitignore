@@ -1,5 +1,6 @@
 /downloads/
 .env
+budget transfers.csv
 
 .elixir_ls
 
