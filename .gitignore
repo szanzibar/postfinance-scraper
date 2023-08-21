@@ -2,6 +2,9 @@
 .env
 budget transfers.csv
 
+# newest can be downloaded with ./install_chromes.sh
+chromedriver
+
 .elixir_ls
 
 # The directory Mix will write compiled artifacts to.
