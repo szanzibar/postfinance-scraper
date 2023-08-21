@@ -23,7 +23,6 @@ defmodule PostFinanceScraper.FireflyImporter do
     response.body
     |> String.split("\n", trim: true)
     |> Enum.reject(&String.contains?(&1, "Duplicate of transaction"))
-    |> Enum.join("\n")
     |> tap(&Logger.info(&1))
   end
 

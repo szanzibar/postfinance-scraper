@@ -2,7 +2,7 @@ defmodule PostFinanceScraperWeb.Run do
   use PostFinanceScraperWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, log: "", running: false)
+    socket = assign(socket, log: [], running: false)
     {:ok, socket}
   end
 
@@ -13,7 +13,11 @@ defmodule PostFinanceScraperWeb.Run do
       <%= if @running do %>
         <div>Running...</div>
       <% end %>
-      <div><%= @log %></div>
+      <div class="flex flex-col space-y-4">
+      <%= for line <- @log do %>
+        <code><%= line %></code>
+      <% end %>
+      </div>
     </div>
     """
   end
@@ -26,7 +30,7 @@ defmodule PostFinanceScraperWeb.Run do
       send(self, {:run_finished, results})
     end)
 
-    {:noreply, assign(socket, running: true, log: "Please approve PostFinance login request")}
+    {:noreply, assign(socket, running: true, log: ["Please approve PostFinance login request"])}
   end
 
   def handle_info({:run_finished, results}, socket) do
