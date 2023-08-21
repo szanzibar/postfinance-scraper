@@ -6,9 +6,9 @@ defmodule PostFinanceScraper.ExportCleaner do
 
     path
     |> File.read!()
+    |> String.trim()
     |> String.split("\r\n")
-    |> remmove_header()
-    |> remove_footer()
+    |> select_header_and_transactions()
     |> strip_kauf_vom()
     |> fix_duplicates()
     |> Enum.join("\r\n")
@@ -49,21 +49,40 @@ defmodule PostFinanceScraper.ExportCleaner do
     removed_duplicates ++ fixed_duplicates
   end
 
-  defp remmove_header(contents) do
-    first_line = List.first(contents)
+  defp select_header_and_transactions(contents) do
+    sections =
+      Enum.chunk_while(
+        contents,
+        [],
+        fn line, acc ->
+          if line == "",
+            do: {:cont, Enum.reverse(acc), []},
+            else: {:cont, [line | acc]}
+        end,
+        fn acc ->
+          {:cont, acc, []}
+        end
+      )
 
-    if String.contains?(first_line, "Buchungsart") || String.contains?(first_line, "Entry type"),
-      do: Enum.drop(contents, 4),
-      else: contents
-  end
+    case Enum.count(sections) do
+      4 ->
+        # fresh transaction export has:
+        # 5 ish lines of info about csv
+        # column headers
+        # transaction data
+        # disclaimer
+        Enum.concat([Enum.at(sections, 1), [""], Enum.at(sections, 2)])
 
-  defp remove_footer(contents) do
-    last_line = List.last(contents) |> String.trim()
+      2 ->
+        # We'll assume export has already been processed and has:
+        # column headers
+        # transaction data
+        Enum.concat([Enum.at(sections, 0), [""], Enum.at(sections, 1)])
 
-    if String.contains?(last_line, "The document") ||
-         String.contains?(last_line, "Der Dokumentinhalt"),
-       do: Enum.drop(contents, -3),
-       else: contents
+      _ ->
+        Logger.error("Unexpected number of sections: #{inspect(sections)}")
+        Enum.concat(sections)
+    end
   end
 
   defp strip_kauf_vom(contents) do
