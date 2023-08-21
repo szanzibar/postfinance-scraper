@@ -12,6 +12,8 @@ defmodule PostFinanceScraperWeb.Run do
       <.button phx-click="run" class="mb-4" disabled={@running}>Scrape</.button>
       <%= if @running do %>
         <div>Running...</div>
+        <br>
+        <h2>Log</h2>
       <% end %>
       <div class="flex flex-col space-y-4">
       <%= for line <- @log do %>
@@ -29,7 +31,7 @@ defmodule PostFinanceScraperWeb.Run do
       PostFinanceScraper.run(self)
     end)
 
-    {:noreply, assign(socket, running: true, log: ["Please approve PostFinance login request"])}
+    {:noreply, assign(socket, running: true, log: [])}
   end
 
   def handle_info({:log, log, running}, socket) do

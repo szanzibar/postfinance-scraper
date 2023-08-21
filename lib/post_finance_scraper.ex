@@ -8,13 +8,13 @@ defmodule PostFinanceScraper do
   """
 
   def run(caller) do
-    send(caller, {:log, ["Scraping..."], true})
+    send(caller, {:log, ["Scraping...", "Please approve PostFinance login request"], true})
     PostFinanceScraper.Scraper.scrape()
 
     send(caller, {:log, ["Cleaning export..."], true})
 
     PostFinanceScraper.ExportCleaner.clean()
-    |> tap(fn _ -> send(caller, {:log, ["Importing to firefly..."], true}) end)
+    |> tap(fn _ -> send(caller, {:log, ["Importing into firefly..."], true}) end)
     |> PostFinanceScraper.FireflyImporter.import()
     |> tap(fn results -> send(caller, {:log, results, false}) end)
   end
