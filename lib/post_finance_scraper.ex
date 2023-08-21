@@ -7,10 +7,15 @@ defmodule PostFinanceScraper do
   if it comes from the database, an external API or others.
   """
 
-  def run() do
+  def run(caller) do
+    send(caller, {:log, ["Scraping..."], true})
     PostFinanceScraper.Scraper.scrape()
 
+    send(caller, {:log, ["Cleaning export..."], true})
+
     PostFinanceScraper.ExportCleaner.clean()
+    |> tap(fn _ -> send(caller, {:log, ["Importing to firefly..."], true}) end)
     |> PostFinanceScraper.FireflyImporter.import()
+    |> tap(fn results -> send(caller, {:log, results, false}) end)
   end
 end

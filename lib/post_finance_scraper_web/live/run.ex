@@ -9,7 +9,7 @@ defmodule PostFinanceScraperWeb.Run do
   def render(assigns) do
     ~H"""
     <div>
-      <.button phx-click="run" class="mb-4">Scrape</.button>
+      <.button phx-click="run" class="mb-4" disabled={@running}>Scrape</.button>
       <%= if @running do %>
         <div>Running...</div>
       <% end %>
@@ -26,14 +26,13 @@ defmodule PostFinanceScraperWeb.Run do
     self = self()
 
     Task.start_link(fn ->
-      results = PostFinanceScraper.run()
-      send(self, {:run_finished, results})
+      PostFinanceScraper.run(self)
     end)
 
     {:noreply, assign(socket, running: true, log: ["Please approve PostFinance login request"])}
   end
 
-  def handle_info({:run_finished, results}, socket) do
-    {:noreply, assign(socket, running: false, log: results)}
+  def handle_info({:log, log, running}, socket) do
+    {:noreply, assign(socket, running: running, log: log)}
   end
 end
