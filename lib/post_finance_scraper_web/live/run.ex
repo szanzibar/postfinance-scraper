@@ -9,7 +9,10 @@ defmodule PostFinanceScraperWeb.Run do
   def render(assigns) do
     ~H"""
     <div>
-      <.button phx-click="run" class="mb-4" disabled={@running}>Scrape</.button>
+      <div class="flex justify-between">
+        <.button phx-click="run" disabled={@running}>Scrape</.button>
+        <.button phx-click="import_budgets" data-confirm="Are you sure about that?????" disabled={@running}>Import monthly budget transfers</.button>
+      </div>
       <%= if @running do %>
         <div>Running...</div>
         <br>
@@ -29,6 +32,16 @@ defmodule PostFinanceScraperWeb.Run do
 
     Task.start_link(fn ->
       PostFinanceScraper.run(self)
+    end)
+
+    {:noreply, assign(socket, running: true, log: [])}
+  end
+
+  def handle_event("import_budgets", _params, socket) do
+    self = self()
+
+    Task.start_link(fn ->
+      PostFinanceScraper.import_budgets(self)
     end)
 
     {:noreply, assign(socket, running: true, log: [])}

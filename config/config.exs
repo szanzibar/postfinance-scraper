@@ -56,6 +56,8 @@ config :tailwind,
     cd: Path.expand("../assets", __DIR__)
   ]
 
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

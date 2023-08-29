@@ -49,6 +49,7 @@ defmodule PostFinanceScraper.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:dotenvy, "~> 0.8.0"},
       {:httpoison, "~> 2.1"},
+      {:tzdata, "~> 1.1"},
       {:wallaby, "~> 0.30.4"}
     ]
   end

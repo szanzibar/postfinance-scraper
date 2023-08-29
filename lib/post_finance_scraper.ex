@@ -18,4 +18,19 @@ defmodule PostFinanceScraper do
     |> PostFinanceScraper.FireflyImporter.import()
     |> tap(fn results -> send(caller, {:log, results, false}) end)
   end
+
+  def import_budgets(caller) do
+    send(caller, {:log, ["Update import date..."], true})
+    path = PostFinanceScraper.BudgetTransferCleaner.update()
+
+    send(caller, {:log, ["Importing into firefly..."], true})
+
+    results =
+      PostFinanceScraper.FireflyImporter.import(
+        path,
+        "./import/import_budget_transfers.json"
+      )
+
+    send(caller, {:log, results, false})
+  end
 end
