@@ -3,6 +3,9 @@
 # Extend from the official Elixir image.
 FROM elixir:latest
 
+#exclude from watchtower
+LABEL com.centurylinklabs.watchtower.enable="false"
+
 # Create app directory and copy the Elixir projects into it.
 RUN mkdir /app
 COPY . /app
