@@ -21,6 +21,12 @@ RUN apt-get install -y wget
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
 
+# TODO: sometimes the latest version of chrome doesn't yet have a corresponding chromedriver. 
+# figure out how to get the latest chromedrive, and then install that version of chrome
+# not sure how to download a specific version of chrome directly. Can only find that 
+# stable_current url above.
+# Alternatively download the latest stable chromedriver assuming a patch version difference doesn't matter.
+# Occasionally this could get a major version behind though
 RUN CHROME_VERSION=$(google-chrome --product-version) && \
 wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/$CHROME_VERSION/linux64/chromedriver-linux64.zip && \
 unzip -o chromedriver-linux64.zip -d . && cp ./chromedriver-linux64/chromedriver . && \
