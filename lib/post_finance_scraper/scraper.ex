@@ -3,7 +3,7 @@ defmodule PostFinanceScraper.Scraper do
   import Wallaby.Query
   @url "https://www.postfinance.ch/ap/ba/ob/html/finance/home?login"
 
-  def scrape() do
+  def scrape(caller, user \\ :steven) do
     root_dir = File.cwd!()
 
     {:ok, session} =
@@ -19,7 +19,10 @@ defmodule PostFinanceScraper.Scraper do
         }
       )
 
-    post_finance = Application.get_env(:post_finance_scraper, :post_finance) |> Map.new()
+    post_finance =
+      Application.get_env(:post_finance_scraper, :post_finance)[user]
+
+    send(caller, {:log, ["Scraping...", "Please approve PostFinance login request"], true})
 
     # Visit the requested URL and fetch the page body
     visit(session, @url)
@@ -35,6 +38,12 @@ defmodule PostFinanceScraper.Scraper do
       )
     end)
     |> has?(css("#widget-movements > div > fpui-widget-header-wrapper > h2"))
+
+    send(
+      caller,
+      {:log, ["Scraping...", "Logged in successfully. Starting to download transactions..."],
+       true}
+    )
 
     transaction_url = "https://www.postfinance.ch/ap/ba/ob/html/finance/assets/movements-overview"
 
@@ -54,6 +63,11 @@ defmodule PostFinanceScraper.Scraper do
       )
     end)
     |> click(css("fpuc-movements-overview-export > button"))
+
+    send(
+      caller,
+      {:log, ["Scraping...", "Waiting 5 seconds for download to finish..."], true}
+    )
 
     Process.sleep(5_000)
 

@@ -7,9 +7,9 @@ defmodule PostFinanceScraper do
   if it comes from the database, an external API or others.
   """
 
-  def run(caller) do
-    send(caller, {:log, ["Scraping...", "Please approve PostFinance login request"], true})
-    PostFinanceScraper.Scraper.scrape()
+  def run(caller, user) do
+    send(caller, {:log, ["Scraping..."], true})
+    PostFinanceScraper.Scraper.scrape(caller, user)
 
     send(caller, {:log, ["Cleaning export..."], true})
 
@@ -20,7 +20,7 @@ defmodule PostFinanceScraper do
   end
 
   def import_budgets(caller) do
-    send(caller, {:log, ["Update import date..."], true})
+    send(caller, {:log, ["Updating import date..."], true})
     path = PostFinanceScraper.BudgetTransferCleaner.update()
 
     send(caller, {:log, ["Importing into firefly..."], true})

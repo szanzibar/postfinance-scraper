@@ -11,11 +11,18 @@ source!([".env", System.get_env()])
 # The block below contains prod specific runtime configuration.
 
 config :post_finance_scraper,
-  post_finance: [
-    username: env!("USERNAME", :string),
-    password: env!("PASSWORD", :string),
-    user_id: env!("USER_ID", :string)
-  ],
+  post_finance: %{
+    steven: %{
+      username: env!("USERNAME", :string),
+      password: env!("PASSWORD", :string),
+      user_id: env!("USER_ID", :string)
+    },
+    kathrin: %{
+      username: env!("K_USERNAME", :string),
+      password: env!("K_PASSWORD", :string),
+      user_id: env!("K_USER_ID", :string)
+    }
+  },
   firefly_iii: [
     token: env!("FIREFLY_TOKEN", :string),
     url: env!("FIREFLY_URL", :string)
